@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<section class="auth-layout">
+  <div class="auth-intro"><span class="eyebrow">TIXLY SUPPORT</span><h1>One place for every request.</h1><p>Create your account to track updates, share details, and get help from the right team.</p><div class="intro-points"><span>✓ Keep every conversation together</span><span>✓ See progress as it happens</span></div></div>
+  <div class="panel auth-panel">
+    <div class="panel-heading"><h2>Create your account</h2><p>Get started in less than a minute.</p></div>
+    <form action="/register" method="post" class="stack-form">
+      <label for="name">Full name</label><input id="name" name="name" type="text" autocomplete="name" maxlength="80" minlength="2" required value="<%= formValues.name || '' %>" aria-describedby="name-error"><% if (formErrors.name) { %><small class="field-error" id="name-error"><%= formErrors.name %></small><% } %>
+      <label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required value="<%= formValues.email || '' %>" aria-describedby="email-error"><% if (formErrors.email) { %><small class="field-error" id="email-error"><%= formErrors.email %></small><% } %>
+      <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required aria-describedby="password-error"><% if (formErrors.password) { %><small class="field-error" id="password-error"><%= formErrors.password %></small><% } %>
+      <label for="confirmPassword">Confirm password</label><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="6" required aria-describedby="confirm-error"><% if (formErrors.confirmPassword) { %><small class="field-error" id="confirm-error"><%= formErrors.confirmPassword %></small><% } %>
+      <button class="button button-primary button-wide" type="submit">Create account</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="/login">Log in</a></p>
+  </div>
+</section>
+<%- include('../partials/footer') %>

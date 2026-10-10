@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<section class="page-heading heading-row"><div><span class="eyebrow"><%= staff ? 'TEAM OVERVIEW' : 'YOUR SUPPORT SPACE' %></span><h1>Good to see you, <%= currentUser.name.split(' ')[0] %>.</h1><p><%= staff ? 'Here’s what needs your team’s attention today.' : 'Here’s a snapshot of your support requests.' %></p></div><a class="button button-primary" href="/tickets/new">＋ Create a ticket</a></section>
+<section class="stats-grid" aria-label="Ticket counts">
+  <% [['Open','Open','stat-open'],['In Progress','In Progress','stat-progress'],['Resolved','Resolved','stat-resolved'],['Closed','Closed','stat-closed']].forEach(([label,key,style]) => { %>
+    <article class="stat-card <%= style %>"><span class="stat-label"><%= label %></span><strong><%= counts[key] %></strong><span class="stat-note">tickets</span></article>
+  <% }); %>
+</section>
+<section class="panel section-panel">
+  <div class="section-heading"><div><h2><%= staff ? 'Needs attention' : 'Your latest tickets' %></h2><p><%= staff ? 'Urgent and high priority open tickets.' : 'The latest activity on your requests.' %></p></div><a class="text-link" href="/tickets">View all tickets <span aria-hidden="true">→</span></a></div>
+  <% if (recentTickets.length) { %>
+    <div class="ticket-list">
+      <% recentTickets.forEach((ticket) => { %>
+        <a class="ticket-row" href="/tickets/<%= ticket.id %>"><span class="ticket-icon"><%= ticket.category === 'Bug' ? '⌘' : ticket.category === 'Billing' ? '$' : '↗' %></span><span class="ticket-summary"><strong><span class="ticket-number">#<%= ticket.ticketNumber %></span> <%= ticket.title %></strong><small><%= staff ? `From ${ticket.createdBy.name} · ` : '' %><%= ticket.category %> · <%= new Date(ticket.createdAt).toLocaleDateString() %></small></span><span class="ticket-side"><span class="badge badge-<%= ticket.status.toLowerCase().replace(' ', '-') %>"><%= ticket.status %></span><span class="priority priority-<%= ticket.priority.toLowerCase() %>"><%= ticket.priority %></span></span></a>
+      <% }); %>
+    </div>
+  <% } else { %><div class="empty-state"><span class="empty-icon">✦</span><h3><%= staff ? 'Nothing urgent right now' : 'No tickets yet' %></h3><p><%= staff ? 'High and urgent open tickets will appear here.' : 'When you need help, create a ticket and your team will take it from there.' %></p><% if (!staff) { %><a class="button button-secondary" href="/tickets/new">Create your first ticket</a><% } %></div><% } %>
+</section>
+<%- include('../partials/footer') %>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <title><%= title ? `${title} · Tixly` : 'Tixly · Ticket support' %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="<%= currentUser ? '/dashboard' : '/' %>" aria-label="Tixly home"><span class="brand-mark">T</span><span>Tixly</span></a>
+    <% if (currentUser) { %>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+        <a href="/tickets" class="<%= currentPath.startsWith('/tickets') ? 'active' : '' %>">Tickets</a>
+        <a class="notification-link" href="/notifications" aria-label="Notifications, <%= unreadNotificationCount %> unread">Notifications <% if (unreadNotificationCount) { %><span class="notification-count"><%= unreadNotificationCount %></span><% } %></a>
+        <% if (['Agent', 'Admin'].includes(currentUser.role)) { %><a href="/reports">Reports</a><% } %>
+        <% if (currentUser.role === 'Admin') { %><a href="/admin/users">Users</a><% } %>
+      </nav>
+      <div class="account-menu">
+        <span class="user-chip"><span class="avatar"><%= currentUser.name.charAt(0).toUpperCase() %></span><span class="user-name"><%= currentUser.name %><small><%= currentUser.role %></small></span></span>
+        <form action="/logout" method="post"><button class="button button-quiet button-small" type="submit">Log out</button></form>
+      </div>
+    <% } else { %>
+      <nav class="main-nav"><a href="/login">Log in</a><a class="button button-primary button-small" href="/register">Create account</a></nav>
+    <% } %>
+  </div>
+</header>
+<main class="container">
+  <% if (successMessages && successMessages.length) { successMessages.forEach((message) => { %><div class="flash flash-success" role="status"><%= message %></div><% }); } %>
+  <% if (errorMessages && errorMessages.length) { errorMessages.forEach((message) => { %><div class="flash flash-error" role="alert"><%= message %></div><% }); } %>

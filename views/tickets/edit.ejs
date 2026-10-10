@@ -1,0 +1,4 @@
+<%- include('../partials/header') %>
+<section class="page-heading"><a class="back-link" href="/tickets/<%= ticket.id %>">← Back to ticket</a><span class="eyebrow">UPDATE REQUEST</span><h1>Edit ticket</h1><p>Changes can be made while your request is open.</p></section>
+<%- include('_form', { action: `/tickets/${ticket.id}`, method: 'PUT', ticket }) %>
+<%- include('../partials/footer') %>

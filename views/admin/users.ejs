@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+<section class="page-heading"><span class="eyebrow">ADMINISTRATION</span><h1>Manage users</h1><p>Create accounts, update roles, or remove access.</p></section>
+<section class="panel admin-create"><div class="section-heading"><div><h2>Create an account</h2><p>Users can also register themselves with the User role.</p></div></div>
+  <form action="/admin/users" method="post" class="admin-user-form">
+    <div><label for="name">Full name</label><input id="name" name="name" type="text" minlength="2" maxlength="80" required value="<%= formValues.name || '' %>"><% if (formErrors.name) { %><small class="field-error"><%= formErrors.name %></small><% } %></div>
+    <div><label for="email">Email</label><input id="email" name="email" type="email" required value="<%= formValues.email || '' %>"><% if (formErrors.email) { %><small class="field-error"><%= formErrors.email %></small><% } %></div>
+    <div><label for="password">Temporary password</label><input id="password" name="password" type="password" minlength="6" required><% if (formErrors.password) { %><small class="field-error"><%= formErrors.password %></small><% } %></div>
+    <div><label for="role">Role</label><select id="role" name="role" required><% ['User','Agent','Admin'].forEach((role) => { %><option value="<%= role %>"><%= role %></option><% }); %></select></div>
+    <button class="button button-primary button-small" type="submit">Create account</button>
+  </form>
+</section>
+<section class="panel table-panel"><div class="section-heading"><div><h2>All accounts</h2><p><%= users.length %> registered <%= users.length === 1 ? 'user' : 'users' %></p></div></div>
+  <div class="user-list"><% users.forEach((user) => { %><article class="user-row"><span class="avatar"><%= user.name.charAt(0).toUpperCase() %></span><div class="user-details"><strong><%= user.name %></strong><small><%= user.email %></small></div><span class="role-badge role-<%= user.role.toLowerCase() %>"><%= user.role %></span><form action="/admin/users/<%= user.id %>/role?_method=PATCH" method="post" class="role-form"><label class="sr-only" for="role-<%= user.id %>">Change role for <%= user.name %></label><select id="role-<%= user.id %>" name="role"><% ['User','Agent','Admin'].forEach((role) => { %><option value="<%= role %>" <%= user.role === role ? 'selected' : '' %>><%= role %></option><% }); %></select><button class="button button-quiet button-small" type="submit">Save role</button></form><% if (user.id !== currentUser.id) { %><form action="/admin/users/<%= user.id %>?_method=DELETE" method="post" data-confirm="Delete <%= user.name %> and their tickets? This cannot be undone."><button class="button button-danger button-small" type="submit">Delete</button></form><% } else { %><span class="muted-text current-user-label">You</span><% } %></article><% }); %></div>
+</section>
+<%- include('../partials/footer') %>

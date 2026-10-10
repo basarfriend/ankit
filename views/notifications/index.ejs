@@ -1,0 +1,6 @@
+<%- include('../partials/header') %>
+<section class="page-heading heading-row"><div><span class="eyebrow">STAY IN THE LOOP</span><h1>Notifications</h1><p>Your ticket updates and replies, all together.</p></div><form action="/notifications/all/read" method="post"><button class="button button-secondary button-small" type="submit">Mark all as read</button></form></section>
+<section class="panel notification-panel">
+  <% if (notifications.length) { %><ul class="notification-list"><% notifications.forEach((notification) => { %><li class="notification-item <%= notification.read ? '' : 'unread' %>"><span class="notification-dot"></span><div class="notification-content"><p><%= notification.message %></p><small><%= new Date(notification.createdAt).toLocaleString() %></small></div><% if (notification.ticket) { %><a class="text-link" href="/tickets/<%= notification.ticket.id %>">View ticket #<%= notification.ticket.ticketNumber %></a><% } %><% if (!notification.read) { %><form action="/notifications/<%= notification.id %>/read" method="post"><button class="button button-quiet button-small" type="submit">Mark read</button></form><% } %></li><% }); %></ul><% } else { %><div class="empty-state"><span class="empty-icon">♧</span><h3>You’re all caught up</h3><p>New ticket updates will appear here.</p></div><% } %>
+</section>
+<%- include('../partials/footer') %>

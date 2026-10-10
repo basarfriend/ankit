@@ -1,0 +1,7 @@
+<%- include('../partials/header') %>
+<section class="page-heading"><span class="eyebrow">TEAM INSIGHTS</span><h1>Reports</h1><p>A quick view of support volume and ticket distribution.</p></section>
+<section class="stats-grid report-stats"><article class="stat-card stat-open"><span class="stat-label">Total tickets</span><strong><%= totalTickets %></strong><span class="stat-note">all time</span></article><article class="stat-card stat-resolved"><span class="stat-label">Resolution rate</span><strong><%= resolutionRate %>%</strong><span class="stat-note">resolved or closed</span></article><article class="stat-card stat-progress"><span class="stat-label">Unassigned</span><strong><%= unassigned %></strong><span class="stat-note">need an owner</span></article></section>
+<section class="report-grid">
+  <% [['Tickets by status',byStatus],['Tickets by priority',byPriority],['Tickets by category',byCategory]].forEach(([heading, rows]) => { %><article class="panel chart-panel"><h2><%= heading %></h2><div class="chart-bars"><% rows.forEach((row) => { %><div class="bar-row"><div class="bar-label"><span><%= row.name %></span><strong><%= row.count %></strong></div><div class="bar-track" role="img" aria-label="<%= row.name %>: <%= row.count %> tickets"><span class="bar-fill" style="width:<%= Math.round(row.count / maximum * 100) %>%"></span></div></div><% }); %></div></article><% }); %>
+</section>
+<%- include('../partials/footer') %>
